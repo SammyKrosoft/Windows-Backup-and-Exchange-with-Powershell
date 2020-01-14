@@ -1,7 +1,9 @@
 Param(
-[String] $Server = $env:computerName)
+       [String]$Server = $env:computerName,
+       [Parameter(Mandatory)][String]$BackupShare = "\\YourServer\Backups\$($env:computername)"
+)
  
-$BackupShare = "\\COSRVBK01\backups\COSRVEX01\" #Including trailing backslash
+$BackupShare += "\"            #Add trailing space
 $Databases = @("Users-A","Users-B","Users-C")
  
 $RequireLocal = $False # Script will skip any DBs that aren't active locally
