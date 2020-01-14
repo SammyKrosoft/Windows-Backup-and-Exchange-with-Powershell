@@ -1,6 +1,7 @@
 # Windows-Backup-and-Exchange-with-Powershell
 Writing a guide on using Windows Server Backup to backup Exchange server databases.
-This script is based on the blog from Jason (Izzy) Sherry, that you can find here:
+
+First starting with using PowerShell to backup Exchange databases. Found a script showing the sequences on doing this. This script is based on the blog from Jason (Izzy) Sherry, that you can find here:
 
 https://blog.jasonsherry.net/2013/02/06/windows-backup-script/
 
