@@ -35,10 +35,20 @@ Add-WBFileSpec -Policy $Policy -FileSpec $FileSpec
 
 #Fith command: get Windows Backup disk configuration. 
 #This gets the list of internal and external disks available for the local computer and stores the results in the $Disks variable for re-use
-$Disks = Get-WBDisk
+#$Disks = Get-WBDisk
+#$Disks
+#NOTE: We can specify the volume path directly as well
+$BackupPath = "C:\ExchangeVolumes\ExVol3"
 
+#Sixth command: create a backup target object and store it in a $BackupTarget variable
+#NOTE: we use a variable to store it because If we don't , the backup target object is just invoked and then lost
 $BackupTarget = New-WBBackupTarget -VolumePath $BackupPath
-Add-WBBackupTarget -Policy $Policy -Target $BackupTarget
+#Just renaming the $BackupTarget variable to $BackupLocation (wbadmin.exe uses the -backupTarget parameter, and I wanted to stick to wbadmin.exe for easier comparing between the executable and the command line
+$BackupLocation = $BackupTarget
+
+#The seventh command adds the above create backup target tp the backup policy we created
+Add-WBBackupTarget -Policy $Policy -Target $BackupLocation
+
 
 Set-WBVssBackupOption -Policy $Policy -VssFullBackup
 
