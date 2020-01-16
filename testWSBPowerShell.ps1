@@ -16,7 +16,8 @@ $BackupPath = "C:\ExchangeVolumes\ExVol3"
 #Getting paths to databases to backup (uncomment to backup all databases)
 #$Databases | % {$_.EdbFilePath}
 #$DatabasePaths = $Databases | % {$_.EdbFilePath.PathName}
-$DatabasePathTest = "C:\ExchangeDatabases\DAG1-DB1\DAG1-DB1.db\DAG1-DB1.edb"
+$DatabasePathTest = "C:\ExchangeDatabases\DAG1-DB2\DAG1-DB2.db\DAG1-DB2.edb"
+
 
 # Prerequisite: add Windows Server Backup feature
 Add-WindowsFeature "Windows-Server-Backup"
@@ -46,23 +47,17 @@ $BackupTarget = New-WBBackupTarget -VolumePath $BackupPath
 #Just renaming the $BackupTarget variable to $BackupLocation (wbadmin.exe uses the -backupTarget parameter, and I wanted to stick to wbadmin.exe for easier comparing between the executable and the command line
 $BackupLocation = $BackupTarget
 
-#The seventh command adds the above create backup target tp the backup policy we created
+#The seventh command adds the above created backup target to the backup policy we created on step 1 ($policy = New-WBPolicy)
 Add-WBBackupTarget -Policy $Policy -Target $BackupLocation
 
-
+#The seventh bis sets the backup as a VSSFull backup (just like the wbadmin.exe command line)
 Set-WBVssBackupOption -Policy $Policy -VssFullBackup
 
+#Step 8 - set backup schedule inside the policy. This sets the time to create daily backups
 Set-WBSchedule -Policy $Policy -Schedule $(Get-Date)
 
+#Step 9 - set the backup policy object for the computer
 Set-WBPolicy -Policy $Policy
 
 
-
-### Start ?
-Start-WBFileRecovery 
-
-
-$Disks = Get-WBDisk
-Get-WBVolume -VolumePath $BackupPath
-
-New-WBFileSpec
+Start-WBBackup -policy $Policy
