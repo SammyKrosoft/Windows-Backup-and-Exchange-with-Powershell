@@ -14,7 +14,6 @@ $CMDLine = "START BACKUP -backupTarget:" + $BackupPath + " -include:" + $DBDrive
 $BackupPath = "C:\ExchangeVolumes\ExVol3"
 
 #Getting paths to databases to backup (uncomment to backup all databases)
-$Databases = Get-MailboxDatabase
 $Databases | % {$_.EdbFilePath}
 $DatabasePaths = $Databases | % {$_.EdbFilePath.PathName}
 #$DatabasePathTest = "C:\ExchangeDatabases\DAG1-DB2\DAG1-DB2.db\DAG1-DB2.edb"
@@ -22,6 +21,7 @@ $DatabasePaths = $Databases | % {$_.EdbFilePath.PathName}
 
 # Prerequisite: add Windows Server Backup feature
 Add-WindowsFeature "Windows-Server-Backup"
+
 
 Foreach ($DatabasePAth in $DatabasePaths) {
 
@@ -65,3 +65,4 @@ Foreach ($DatabasePAth in $DatabasePaths) {
 
     Start-WBBackup -policy $Policy
  }
+
